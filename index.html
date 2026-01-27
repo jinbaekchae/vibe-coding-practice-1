@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World Button</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .my-button {
+            position: fixed; /* Fix position relative to viewport */
+            bottom: 30px; /* Distance from bottom */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for button width */
+            padding: 15px 40px;
+            border-radius: 25px;
+            background-color: #007bff;
+            color: white;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10; /* Ensure button is on top */
+        }
+
+        .my-button:hover {
+            background-color: #0056b3;
+        }
+
+        .my-button:active {
+            background-color: #004085;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translate(-50%, 2px); /* Adjust transform for click effect */
+        }
+        
+        #message {
+            display: none; /* Hidden by default */
+            position: absolute; /* Position relative to the nearest positioned ancestor */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 72px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="message">Hello World!</div>
+    <button class="my-button" id="myButton">클릭</button>
+
+    <script>
+        const messageElement = document.getElementById('message');
+        const myButton = document.getElementById('myButton');
+
+        let x, y; // Position
+        let dx, dy; // Velocity
+        let rect;
+        let animationFrameId;
+        let isInitialized = false;
+        let hue = 0;
+
+        function initAnimation() {
+            // Set initial position to center
+            x = window.innerWidth / 2;
+            y = window.innerHeight / 2;
+            
+            // Set initial velocity to a random direction
+            const initialSpeed = 3;
+            const angle = Math.random() * 2 * Math.PI;
+            dx = Math.cos(angle) * initialSpeed;
+            dy = Math.sin(angle) * initialSpeed;
+
+            rect = messageElement.getBoundingClientRect();
+            messageElement.style.left = '0px';
+            messageElement.style.top = '0px';
+
+            isInitialized = true;
+            messageElement.style.display = 'block';
+            
+            // Start the animation loop
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            update();
+        }
+
+        function update() {
+            // Get viewport dimensions
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            rect = messageElement.getBoundingClientRect();
+
+            // Update position
+            x += dx;
+            y += dy;
+
+            // Update color
+            hue = (hue + 2) % 360; // Increment hue for color change (2 is a good speed)
+            messageElement.style.color = `hsl(${hue}, 100%, 50%)`;
+
+            // Collision detection and reflection
+            if (x < 0) {
+                x = 0;
+                dx = -dx;
+                dy *= (1 + (Math.random() - 0.5) * 0.4); // Perturb y velocity by up to +/- 20%
+            } else if (x + rect.width > vw) {
+                x = vw - rect.width;
+                dx = -dx;
+                dy *= (1 + (Math.random() - 0.5) * 0.4); // Perturb y velocity by up to +/- 20%
+            }
+
+            if (y < 0) {
+                y = 0;
+                dy = -dy;
+                dx *= (1 + (Math.random() - 0.5) * 0.4); // Perturb x velocity by up to +/- 20%
+            } else if (y + rect.height > vh) {
+                y = vh - rect.height;
+                dy = -dy;
+                dx *= (1 + (Math.random() - 0.5) * 0.4); // Perturb x velocity by up to +/- 20%
+            }
+
+            // Apply new position
+            messageElement.style.transform = `translate(${x}px, ${y}px)`;
+            
+            animationFrameId = requestAnimationFrame(update);
+        }
+
+        myButton.addEventListener('click', () => {
+            if (!isInitialized) {
+                initAnimation();
+            } else {
+                // On subsequent clicks, increase speed
+                dx *= 1.3;
+                dy *= 1.3;
+            }
+        });
+    </script>
+</body>
+</html>
