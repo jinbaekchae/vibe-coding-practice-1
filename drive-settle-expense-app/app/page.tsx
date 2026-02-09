@@ -132,9 +132,10 @@ export default function Home() {
         <ImageUpload
           label="유류비 영수증"
           name="fuelImages"
-          description="네이버지도 등에서 캡처한 거리/유류비 이미지를 업로드하세요"
+          description="네이버지도에서 캡처한 거리/유류비 이미지를 업로드하세요"
           images={fuelImages}
           onImagesChange={setFuelImages}
+          exampleImages={['/examples/fuel-example-1.png', '/examples/fuel-example-2.png']}
         />
 
         <ImageUpload
@@ -143,6 +144,7 @@ export default function Home() {
           description="카드사 앱에서 캡처한 고속도로 통행료 결제내역을 업로드하세요"
           images={tollImages}
           onImagesChange={setTollImages}
+          exampleImages={['/examples/toll-example-1.jpg', '/examples/toll-example-2.png']}
         />
 
         <button
