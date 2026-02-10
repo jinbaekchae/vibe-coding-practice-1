@@ -9,4 +9,10 @@ body {
 
 input[type="date"] {
   min-width: 0;
+  max-width: 100%;
+  width: 100% !important;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
