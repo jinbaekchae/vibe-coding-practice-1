@@ -96,7 +96,7 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 px-5 py-6 sm:p-8 overflow-hidden">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
         출장 경비 정산 신청
       </h2>
