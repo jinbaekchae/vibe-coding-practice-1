@@ -27,7 +27,7 @@ export default function Home() {
 
     try {
       // 이미지를 리사이즈 후 Base64로 변환 (Vercel 4.5MB body 제한 대응)
-      const resizeAndConvert = (file: File, maxSize = 800): Promise<string> => {
+      const resizeAndConvert = (file: File, maxSize = 1280): Promise<string> => {
         return new Promise((resolve, reject) => {
           const reader = new FileReader()
           reader.onerror = reject
@@ -50,7 +50,7 @@ export default function Home() {
               canvas.height = height
               const ctx = canvas.getContext('2d')!
               ctx.drawImage(img, 0, 0, width, height)
-              resolve(canvas.toDataURL('image/jpeg', 0.7))
+              resolve(canvas.toDataURL('image/jpeg', 0.85))
             }
             img.src = reader.result as string
           }
