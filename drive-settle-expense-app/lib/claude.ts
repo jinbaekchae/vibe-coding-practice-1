@@ -38,28 +38,33 @@ export async function analyzeFuelImage(base64Images: string[]): Promise<Analysis
           ...imageContents,
           {
             type: 'text',
-            text: `이 이미지들은 네이버지도, 카카오맵 등 지도 앱에서 캡처한 경로 안내 결과 이미지입니다.
-라이트모드, 다크모드 모두 가능하며 다양한 레이아웃이 있을 수 있습니다.
+            text: `이 이미지들은 네이버지도, 카카오맵 등 지도 앱에서 캡처한 경로 안내 결과입니다.
+라이트모드/다크모드 모두 가능합니다.
 
-이미지에서 '연료비' 항목의 금액만 찾아주세요.
-- "연료비 1,717원", "연료비 21,806원" 등의 형태로 표시됩니다.
-- "택시비 18,400원 | 연료비 1,717원"처럼 다른 항목과 같은 줄에 있을 수 있습니다.
-- '택시비', '통행료', '톨게이트비' 등 다른 항목은 절대 포함하지 마세요.
+## 중요 규칙
+이미지에 "택시비", "통행료", "연료비" 등 여러 항목이 함께 표시됩니다.
+반드시 "연료비"라고 쓰인 금액만 추출하세요.
 
-반드시 아래 형식으로만 응답하세요:
-금액: X원
-총합: X원
+예를 들어 이미지에 아래처럼 표시된 경우:
+"택시비 68,060원 | 통행료 2,100원 | 연료비 7,072원"
+→ 정답: 7,072원 (연료비)
+→ 오답: 68,060원 (택시비), 2,100원 (통행료)
 
-예시 (이미지 2장인 경우):
-금액: 15,000원
-금액: 12,500원
-총합: 27,500원
+## 응답 형식
+금액: [연료비 금액]원
+총합: [연료비 합계]원
 
-예시 (이미지 1장인 경우):
+이미지가 1장이면:
+금액: 7,072원
+총합: 7,072원
+
+이미지가 2장이면:
+금액: 7,072원
 금액: 1,717원
-총합: 1,717원
+총합: 8,789원
 
-연료비를 찾을 수 없으면 "금액을 찾을 수 없습니다"라고만 답변하세요.`,
+연료비를 찾을 수 없으면 "금액을 찾을 수 없습니다"라고만 답변하세요.
+설명 없이 위 형식으로만 답변하세요.`,
           },
         ],
       },
@@ -107,20 +112,6 @@ export async function analyzeFuelImage(base64Images: string[]): Promise<Analysis
     }
   }
 
-  // 폴백2: 그래도 없으면 숫자+원 패턴 중 가장 작은 값 (연료비는 보통 택시비보다 작음)
-  if (totalAmount === 0 && !text.includes('찾을 수 없')) {
-    const allAmounts = text.match(/([\d,]+)\s*원/g)
-    if (allAmounts) {
-      const amounts = allAmounts.map(m => {
-        const num = m.match(/([\d,]+)/)
-        return num ? parseInt(num[1].replace(/,/g, '')) : 0
-      }).filter(n => n > 0)
-      if (amounts.length > 0) {
-        totalAmount = amounts.reduce((sum, a) => sum + a, 0)
-        details.push(`금액: ${totalAmount.toLocaleString()}원`)
-      }
-    }
-  }
 
   return { amount: totalAmount, details }
 }
