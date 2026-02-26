@@ -27,7 +27,7 @@ OR   = RGBColor(0xFF, 0x6C, 0x00)  # 오렌지 accent (강조·볼드 수치·�
 
 ### 타이포그래피
 - **폰트**: `"Noto Sans KR"` 고정
-- **제목**: 22pt Bold DARK
+- **제목**: 22pt Bold OR
 - **섹션 번호**: 11pt GRAY
 - **부제**: 10pt GRAY
 - **카드 제목**: 11~13pt Bold DARK
@@ -154,7 +154,7 @@ def content_page(slide, section_num, title, subtitle=""):
        size=11, color=GRAY)
     tb(slide, title,
        Inches(0.56), Inches(0.42), Inches(8.89), Inches(0.63),
-       size=22, bold=True, color=DARK)
+       size=22, bold=True, color=OR)
     if subtitle:
         tb(slide, subtitle,
            Inches(0.56), Inches(0.87), Inches(8.89), Inches(0.3),

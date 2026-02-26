@@ -110,7 +110,7 @@ def content_page(slide, section_num, title, subtitle=""):
        size=11, color=GRAY)
     tb(slide, title,
        Inches(0.56), Inches(0.42), Inches(8.89), Inches(0.63),
-       size=22, bold=True, color=DARK)
+       size=22, bold=True, color=OR)
     if subtitle:
         tb(slide, subtitle,
            Inches(0.56), Inches(0.87), Inches(8.89), Inches(0.3),
