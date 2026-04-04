@@ -1,89 +1,31 @@
 # ========================================
-# 민감한 정보 (비밀번호, API 키 등)
+# 기본 원칙: 모든 것을 제외하고, 허용할 폴더만 열기
 # ========================================
-.env
-.env.local
-.env.*.local
-.mcp.json
+
+# 1단계: 모든 파일 제외
+*
+
+# 2단계: 이 프로젝트 폴더들만 허용 (코드가 있는 폴더)
+!drive-settle-expense-app/
+!drive-settle-expense-app/**
+
+# 3단계: 루트의 설정 파일만 허용
+!.gitignore
+!package.json
 
 # ========================================
-# Claude Code 개인 설정 & 메모리
-# ========================================
-.claude/
-
-# ========================================
-# Mac 시스템 파일
-# ========================================
-.DS_Store
-Thumbs.db
-
-# ========================================
-# node_modules (npm 패키지 - 용량 큼)
-# ========================================
-node_modules/
-
-# ========================================
-# Playwright / 브라우저 자동화 임시 파일
-# ========================================
-.playwright-mcp/
-.clawhub/
-
-# ========================================
-# 이미지, 스크린샷
-# ========================================
-*.png
-*.jpg
-*.jpeg
-
-# ========================================
-# 강의 자료, 문서, 데이터 (코드 아닌 것들)
+# 허용된 폴더 안에서도 제외할 것들
 # ========================================
 *.pptx
 *.pdf
 *.xlsx
 *.csv
-*.ppt
-
-# ========================================
-# 고객사 폴더 & 비코드 폴더
-# ========================================
-씨젠의료재단 강의 준비/
-씨젠의료재단_인포그래픽.html
-앤트로픽 영수증/
-영희코칭/
-AI-사용법-원칙/
-KMTC_CODE/
-KMTC_템플릿/
-KMTC_vibecoding_infographic.html
-Woka - 업무 관련/
-anthropic-invoice-auto/
-bsa-optimization-strategy/
-samsung_hi_proposal/
-edu_proposal/
-edu_proposal_v2/
-genspark_교육자료/
-고려해운 바이브코딩 실습용 자료/
-고려해운_BSA_전략/
-광산품 크롤링/
-업무자동화 진단 4단계 워크시트/
-플방/
-data2/
-images/
-genspark_screenshots/
-skills/
-
-# ========================================
-# 기타 비코드 파일
-# ========================================
-발제_점심메뉴_심리학.md
-세미나_인포그래픽.html
-seminar_attachment.html
-claude-code-comparison.html
-mindmap_ai.html
-skill2_upgrade.md
-todo-app.html
-todo-list.html
-google-screenshot.js
-generate_vibecoding_pptx.py
-generate_발제_점심메뉴_심리학_pptx.py
-CLAUDE.md
+*.png
+*.jpg
+*.jpeg
+*.env
+*.env.local
+.DS_Store
+node_modules/
+.playwright-mcp/
+package-lock.json
