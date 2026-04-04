@@ -61,20 +61,38 @@ export default function Home() {
       const fuelBase64 = await Promise.all(fuelImages.map(f => resizeAndConvert(f)))
       const tollBase64 = await Promise.all(tollImages.map(f => resizeAndConvert(f)))
 
-      // API 호출하여 이미지 분석
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fuelImages: fuelBase64,
-          tollImages: tollBase64,
+      // 이미지 분석 + Google Drive 업로드 병렬 처리
+      const [analyzeResponse, uploadResponse] = await Promise.all([
+        fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fuelImages: fuelBase64,
+            tollImages: tollBase64,
+          }),
         }),
-      })
+        fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fuelImages: fuelBase64,
+            tollImages: tollBase64,
+            name: formData.name,
+            tripDate: formData.tripDate,
+            lectureName: formData.lectureName,
+          }),
+        }),
+      ])
 
-      const result = await response.json()
+      const result = await analyzeResponse.json()
+      const uploadResult = await uploadResponse.json()
 
-      if (!response.ok) {
+      if (!analyzeResponse.ok) {
         throw new Error(result.error || '분석에 실패했습니다.')
+      }
+
+      if (!uploadResponse.ok) {
+        throw new Error(uploadResult.error || '이미지 업로드에 실패했습니다.')
       }
 
       // 결과를 세션 스토리지에 저장하고 확인 페이지로 이동
@@ -84,6 +102,8 @@ export default function Home() {
         tollCost: result.tollCost,
         fuelDetails: result.fuelDetails,
         tollDetails: result.tollDetails,
+        fuelLinks: uploadResult.fuelLinks || [],
+        tollLinks: uploadResult.tollLinks || [],
       }))
 
       router.push('/confirm')
