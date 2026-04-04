@@ -27,6 +27,10 @@ yarn-error.log*
 .env*.local
 .env
 
+# Claude Code 설정
+CLAUDE.md
+.claude/
+
 # vercel
 .vercel
 

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const APPS_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbwPxX_l7B5DZoBqlaNIsK0C7SDIkHcd3Q3mz7KOjAeofRB38qOALWm3bPUBuPTmDKAM/exec'
+const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL!
 
 export const maxDuration = 60
 
