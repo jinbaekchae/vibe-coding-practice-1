@@ -29,3 +29,9 @@
 node_modules/
 .playwright-mcp/
 package-lock.json
+
+# Claude Code 설치 가이드 (*.png 규칙 이후에 예외 허용)
+!claude_code_설치가이드.html
+!install_guide_images/
+!install_guide_images/**
+!install_guide_images/*.png
