@@ -8,6 +8,8 @@
 # 2단계: 이 프로젝트 폴더들만 허용 (코드가 있는 폴더)
 !drive-settle-expense-app/
 !drive-settle-expense-app/**
+!claude-guide-deploy/
+!claude-guide-deploy/**
 
 # 3단계: 루트의 설정 파일만 허용
 !.gitignore

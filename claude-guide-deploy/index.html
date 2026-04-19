@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code 사전 설치 가이드</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ff6c00;
+      --orange-light: #fff3eb;
+      --orange-mid: #ffb980;
+      --green-light: #edfdf3;
+      --green: #1a9e4a;
+      --gray-light: #f5f5f5;
+      --gray-mid: #e0e0e0;
+      --gray-text: #555;
+      --red-light: #fff0f0;
+      --red: #d32f2f;
+      --blue-light: #eff6ff;
+      --blue: #1d6ee0;
+      --text: #1a1a1a;
+      --border-radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--text);
+      background: #f8f8f8;
+    }
+
+    /* ── 헤더 ── */
+    .header {
+      background: var(--orange);
+      color: #fff;
+      padding: 48px 40px 40px;
+      text-align: center;
+    }
+    .header h1 { font-size: 36px; font-weight: 900; margin-bottom: 12px; letter-spacing: -0.5px; }
+    .header p { font-size: 20px; opacity: 0.92; font-weight: 500; }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 50px;
+      padding: 6px 20px;
+      font-size: 16px;
+      margin-top: 16px;
+      font-weight: 700;
+    }
+
+    /* ── OS 선택 배너 ── */
+    .os-select-banner {
+      background: var(--orange);
+      text-align: center;
+      padding: 16px 24px 0;
+    }
+    .os-select-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.6);
+      border-radius: 50px 50px 0 0;
+      padding: 12px 40px 14px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.2px;
+    }
+
+    /* ── OS 탭 ── */
+    .os-tabs {
+      background: var(--orange-light);
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 20px 24px 24px;
+      border-bottom: 3px solid var(--orange);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .tab-btn {
+      padding: 20px 52px;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Noto Sans KR', sans-serif;
+      border: 2px solid var(--gray-mid);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--gray-text);
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+    .tab-btn.active {
+      background: var(--orange);
+      color: #fff;
+      border-color: var(--orange);
+      box-shadow: 0 4px 14px rgba(255,108,0,0.3);
+    }
+    .tab-btn:hover:not(.active) { background: var(--orange-light); color: var(--orange); border-color: var(--orange); }
+
+    /* ── 진행 바 ── */
+    .progress-bar {
+      background: #fff;
+      padding: 22px 40px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--gray-mid);
+    }
+    .progress-step { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--gray-text); font-weight: 500; }
+    .progress-step .num {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--gray-mid); color: #888;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
+    .progress-step.active .num { background: var(--orange); color: #fff; }
+    .progress-step.active { color: var(--orange); font-weight: 700; }
+    .progress-arrow { color: var(--gray-mid); font-size: 16px; }
+
+    /* ── 본문 레이아웃 ── */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px 60px; }
+
+    /* ── 섹션 카드 ── */
+    .section {
+      background: #fff;
+      border-radius: var(--border-radius);
+      margin-top: 32px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 24px 32px;
+      background: #fff;
+      border-bottom: 2px solid var(--gray-light);
+    }
+    .section-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--orange); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; flex-shrink: 0;
+    }
+    .section-title { font-size: 26px; font-weight: 700; }
+    .section-subtitle { font-size: 16px; color: var(--gray-text); margin-top: 2px; }
+    .section-body { padding: 28px 32px; }
+
+    /* ── 타임라인 단계 목록 ── */
+    .steps {
+      list-style: none;
+      counter-reset: step;
+      padding-left: 16px;
+      margin-bottom: 24px;
+    }
+    .steps li {
+      counter-increment: step;
+      display: block;
+      position: relative;
+      padding: 2px 0 20px 52px;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+    .steps li:last-child {
+      padding-bottom: 4px;
+    }
+    /* 원형 번호 뱃지 */
+    .steps li::before {
+      content: counter(step);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--orange);
+      border: 2px solid var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px;
+      position: absolute;
+      left: 0; top: 2px;
+      z-index: 2;  /* 선 위에 원이 올라오도록 */
+    }
+    /* 연결 실선 — top:2px에서 시작해 원(z-index:2)이 위를 덮고, bottom:-4px로 다음 원까지 이음 */
+    .steps li::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 2px;     /* 원 상단과 동일 — 원의 흰 배경이 선을 가려줌 */
+      bottom: -4px; /* 다음 li 원 상단까지 연장해 끊김 방지 */
+      width: 32px;  /* 원 너비와 동일 → 50%=원 중심(16px) */
+      z-index: 0;
+      /* 3px 오른쪽으로 이동: 50%+1.5px ~ 50%+4.5px */
+      background: linear-gradient(
+        to right,
+        transparent calc(50% + 1.5px),
+        var(--orange-mid) calc(50% + 1.5px),
+        var(--orange-mid) calc(50% + 4.5px),
+        transparent calc(50% + 4.5px)
+      );
+    }
+    .steps li:last-child::after {
+      display: none;
+    }
+
+    /* ── 박스 공통 ── */
+    .box {
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 16px 0;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    .box-tip { background: var(--orange-light); border-left: 5px solid var(--orange); }
+    .box-warn { background: var(--red-light); border-left: 5px solid var(--red); }
+    .box-success { background: var(--green-light); border-left: 5px solid var(--green); }
+    .box-gray { background: var(--gray-light); border-left: 5px solid var(--gray-mid); }
+    .box-blue { background: var(--blue-light); border-left: 5px solid var(--blue); }
+    .box-reboot {
+      background: #fff8f0;
+      border: 2px solid var(--orange);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 24px 0;
+      font-size: 17px;
+      text-align: center;
+    }
+    .box-title { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+
+    /* ── 코드 블록 ── */
+    .code-block {
+      background: #1e1e2e; color: #cdd6f4;
+      border-radius: 10px; padding: 20px 24px;
+      margin: 16px 0;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 16px; line-height: 1.6;
+      overflow-x: auto;
+      position: relative;
+    }
+    .code-block .prompt { color: #555; font-size: 13px; user-select: none; }
+    .code-block .cmd { color: #89dceb; }
+    .code-block .comment { color: #6c7086; }
+    .copy-btn {
+      position: absolute; top: 10px; right: 10px;
+      background: #3a3a4a; color: #cdd6f4;
+      border: none; border-radius: 6px;
+      padding: 5px 14px; font-size: 13px;
+      cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700; transition: background 0.15s;
+    }
+    .copy-btn:hover { background: var(--orange); color: #fff; }
+    .copy-btn.copied { background: #1a9e4a; color: #fff; }
+    .code-inline {
+      background: #f0f0f0; border-radius: 5px;
+      padding: 2px 8px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 15px; color: var(--orange); font-weight: 500;
+    }
+
+    /* ── 이미지 ── */
+    .img-wrap { margin: 20px 0; }
+    .img-wrap img { width: 100%; border-radius: 10px; border: 2px solid var(--gray-mid); display: block; }
+    .img-caption { font-size: 15px; color: var(--gray-text); text-align: center; margin-top: 8px; }
+
+    /* ── 플레이스홀더 ── */
+    .placeholder {
+      background: var(--gray-light);
+      border: 2px dashed var(--gray-mid);
+      border-radius: 10px;
+      padding: 32px 24px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .placeholder .ph-icon { font-size: 40px; display: block; margin-bottom: 10px; }
+    .placeholder .ph-title { font-size: 16px; font-weight: 700; color: #888; margin-bottom: 6px; }
+    .placeholder .ph-desc { font-size: 14px; color: #aaa; }
+
+    /* ── 강조 ── */
+    strong { font-weight: 700; }
+    .highlight { color: var(--orange); font-weight: 700; }
+    .highlight-green { color: var(--green); font-weight: 700; }
+    .url-link {
+      color: var(--orange); text-decoration: none;
+      font-weight: 700; border-bottom: 2px solid var(--orange-mid);
+    }
+
+    /* ── FAQ ── */
+    .faq-item { border: 2px solid var(--gray-mid); border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+    .faq-q { background: var(--gray-light); padding: 16px 22px; font-weight: 700; font-size: 17px; }
+    .faq-a { padding: 16px 22px; font-size: 17px; background: #fff; }
+
+    /* ── 체크리스트 ── */
+    .checklist {
+      background: var(--green-light);
+      border-radius: var(--border-radius);
+      padding: 28px 32px;
+      margin-top: 32px;
+      border: 2px solid #b2dfcb;
+    }
+    .checklist h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; color: var(--green); }
+    .check-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; font-size: 17px; }
+    .check-box { width: 26px; height: 26px; border: 2px solid var(--green); border-radius: 6px; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── 반응형 ── */
+    @media (max-width: 600px) {
+      .header { padding: 32px 20px; }
+      .header h1 { font-size: 26px; }
+      .section-body, .section-header { padding: 20px; }
+      .os-tabs { gap: 10px; padding: 14px 16px 18px; }
+      .tab-btn { padding: 14px 28px; font-size: 16px; }
+      .os-select-label { font-size: 15px; padding: 10px 24px 12px; }
+      .progress-bar { padding: 14px 20px; }
+    }
+
+    @media print {
+      body { background: white; font-size: 14px; }
+      .section { box-shadow: none; border: 1px solid #ddd; }
+      .os-tabs, .progress-bar { display: none; }
+      #tab-mac { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="header">
+  <h1>Claude Code 사전 설치 가이드</h1>
+  <p>강의 시작 전까지 아래 순서대로 설치해 주세요</p>
+  <span class="badge">소요 시간: 약 20~30분</span>
+</div>
+
+<!-- OS 선택 배너 + 탭 -->
+<div class="os-select-banner">
+  <div class="os-select-label">👇 먼저 사용 중인 OS를 선택하세요</div>
+</div>
+<div class="os-tabs">
+  <button class="tab-btn active" onclick="switchTab('win', this)">🪟 Windows</button>
+  <button class="tab-btn" onclick="switchTab('mac', this)">🍎 Mac</button>
+</div>
+
+<!-- ════════════════════════════════════════════
+     WINDOWS 탭
+     ════════════════════════════════════════════ -->
+<div id="tab-win" class="tab-content">
+
+  <div class="progress-bar">
+    <div class="progress-step active"><span class="num">1</span> Python</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">2</span> Node.js</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">3</span> Git</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">4</span> VS Code</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">5</span> Git Bash 실행</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">6</span> Claude Code</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">7</span> 설치 확인</div>
+  </div>
+
+  <div class="container">
+
+    <!-- 1단계: Python (Win) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">Python 설치</div>
+          <div class="section-subtitle">python.org에서 Python 다운로드</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            브라우저에서 <a class="url-link" href="https://www.python.org/downloads/" target="_blank">python.org/downloads</a> 접속
+            <div class="img-wrap" style="margin-top:12px;">
+              <img src="install_guide_images/01_python_download.png" alt="Python 다운로드 페이지">
+            </div>
+          </li>
+          <li>
+            페이지 상단의 <span class="highlight"><strong>"Download Python install manager"</strong></span> 버튼 클릭 → <span class="code-inline">.msix</span> 파일 다운로드
+            <div class="box box-tip" style="margin-top:12px;">
+              <div class="box-title">📌 버튼 찾기 팁</div>
+              노란 버튼("Download Python 3.x.x")보다 위에 있는 버튼이 Install Manager입니다.<br>
+              <strong>"Download Python install manager"</strong> 또는 <strong>"Python install manager 26.x"</strong>라고 표시됩니다.
+            </div>
+          </li>
+          <li>다운로드된 <span class="code-inline">.msix</span> 파일 더블클릭하여 실행</li>
+          <li>설치 팝업에서 <strong>"설치"</strong> 클릭 → 자동으로 진행됩니다</li>
+          <li>완료 메시지가 뜨면 <strong>"닫기"</strong> 클릭</li>
+        </ol>
+
+
+        <div class="box box-gray">
+          <div class="box-title">💡 설치 후 바탕화면에 아무것도 생기지 않아요 — 정상입니다</div>
+          Python은 카카오톡이나 크롬처럼 실행하는 앱이 아니라, <strong>컴퓨터 안에 깔리는 언어 엔진</strong>입니다. 바탕화면 아이콘이 생기지 않는 게 맞습니다.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2단계: Node.js (Win) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">Node.js 설치</div>
+          <div class="section-subtitle">nodejs.org에서 LTS 버전 다운로드</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            브라우저에서 <a class="url-link" href="https://nodejs.org" target="_blank">nodejs.org</a> 접속
+            <div class="img-wrap" style="margin-top:12px;">
+              <img src="install_guide_images/02_nodejs_download.png" alt="Node.js 다운로드 페이지">
+              <div class="img-caption">▲ nodejs.org — 초록색 "Get Node.js®" 버튼 클릭</div>
+            </div>
+          </li>
+          <li><strong>"Get Node.js®"</strong> 초록색 버튼 클릭 (LTS 버전이 자동 선택됨)</li>
+          <li>
+            다운로드 페이지로 이동되면, 페이지 중간의 코드(명령어)는 무시하고 아래로 스크롤해서 <span class="highlight-green">"Windows 설치 프로그램 (.msi)"</span> 버튼 클릭
+            <div class="box box-warn" style="margin-top:12px;">
+              <div class="box-title">⚠️ 주의 — 코드 블록은 건드리지 마세요</div>
+              페이지 가운데에 <strong>nvm install 24</strong> 같은 코드가 보이는데, 이건 개발자용 방식입니다. 무시하고 페이지 아래 <span class="highlight-green">"Windows 설치 프로그램 (.msi)"</span> 버튼을 클릭하세요.
+            </div>
+          </li>
+          <li>다운로드된 <span class="code-inline">.msi</span> 파일 실행</li>
+          <li>설치 화면에서 <strong>계속 "Next"</strong> 클릭 (기본값 그대로 OK)</li>
+          <li>마지막에 <strong>"Install"</strong> 클릭 → 관리자 권한 팝업 뜨면 "예"</li>
+          <li>완료되면 <strong>"Finish"</strong> 클릭</li>
+        </ol>
+
+        <div class="box box-tip">
+          <div class="box-title">📌 Node.js를 설치하면 npm도 자동으로 설치됩니다</div>
+          npm은 앱스토어처럼 프로그램을 설치하는 도구로, Claude Code 설치에 사용됩니다. 따로 설치할 필요 없습니다.
+        </div>
+
+        <div class="box box-gray">
+          <div class="box-title">💡 설치 후 바탕화면에 아무것도 생기지 않아요 — 정상입니다</div>
+          Node.js도 Python처럼 <strong>눈에 보이지 않는 언어 엔진</strong>입니다. 바탕화면 아이콘이 생기지 않는 게 맞고, 다음 단계에서 명령어로 사용하게 됩니다.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3단계: Git (Win) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Git 설치</div>
+          <div class="section-subtitle">git-scm.com에서 다운로드 — Git Bash 터미널 포함</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            브라우저에서 <a class="url-link" href="https://git-scm.com/download/win" target="_blank">git-scm.com/download/win</a> 접속
+            <div class="img-wrap" style="margin-top:12px;">
+              <img src="install_guide_images/03_git_download.png" alt="Git 다운로드 페이지">
+              <div class="img-caption">▲ git-scm.com — "Click here to download" 링크 클릭</div>
+            </div>
+          </li>
+          <li><strong>"Click here to download"</strong> 링크 클릭하여 다운로드</li>
+          <li>다운로드된 파일 실행</li>
+          <li>설치 화면에서 <strong>계속 "Next"</strong> 클릭 (기본값 그대로 OK)</li>
+          <li>마지막에 <strong>"Install"</strong> 클릭</li>
+          <li>완료되면 <strong>"Finish"</strong> 클릭</li>
+        </ol>
+
+        <div class="placeholder">
+          <span class="ph-icon">🖥️</span>
+          <div class="ph-title">Git 설치 마법사 화면</div>
+          <div class="ph-desc">모든 옵션을 기본값 그대로 두고 "Next" 클릭, 특별히 변경할 항목 없음</div>
+        </div>
+
+        <div class="box box-tip">
+          <div class="box-title">📌 Git을 설치하면 "Git Bash"라는 터미널이 함께 설치됩니다</div>
+          Git Bash는 5단계에서 Claude Code를 설치할 때 사용하는 검은 화면의 터미널입니다. Mac의 기본 터미널과 동일한 명령어를 사용할 수 있어 강의 자료가 동일하게 적용됩니다.
+        </div>
+
+        <div class="box-reboot">
+          <div style="font-size:28px; margin-bottom:8px;">🔄</div>
+          <div style="font-size:20px; font-weight:900; color:var(--orange); margin-bottom:8px;">여기서 컴퓨터를 재부팅해 주세요!</div>
+          <div style="font-size:16px; color:#555;">Python · Node.js · Git 설치가 끝났습니다.<br>재부팅해야 설치된 내용이 완전히 반영됩니다. 재부팅 후 다음 단계를 진행해 주세요.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4단계: VS Code (Win) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div>
+          <div class="section-title">VS Code 설치</div>
+          <div class="section-subtitle">code.visualstudio.com에서 Windows 버전 다운로드</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            브라우저에서 <a class="url-link" href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a> 접속
+            <div class="img-wrap" style="margin-top:12px;">
+              <img src="install_guide_images/04_vscode_download.png" alt="VS Code 다운로드 페이지">
+              <div class="img-caption">▲ code.visualstudio.com — "other platforms" 클릭 후 Windows 버전 선택</div>
+            </div>
+          </li>
+          <li>
+            다운로드 버튼 아래의 <strong>"other platforms"</strong> 링크 클릭
+            <div class="box box-gray" style="margin-top:10px;">
+              기본 버튼이 "Download for macOS"로 표시될 수 있습니다. 반드시 "other platforms" → <strong>Windows x64 User Installer</strong> 선택하세요.
+            </div>
+          </li>
+          <li>다운로드된 파일 실행</li>
+          <li>"사용권 계약 동의함" 체크 → <strong>"다음"</strong></li>
+          <li>
+            설치 옵션 화면에서 아래 항목 체크 확인:
+            <ul style="margin: 8px 0 0 20px; font-size:16px; line-height:2.2;">
+              <li>✅ "Code(으)로 열기" 작업을 파일 상황에 맞는 메뉴에 추가</li>
+              <li>✅ "Code(으)로 열기" 작업을 디렉터리 상황에 맞는 메뉴에 추가</li>
+              <li>✅ PATH에 추가 (기본 체크)</li>
+            </ul>
+          </li>
+          <li><strong>"다음"</strong> → <strong>"설치"</strong> → <strong>"마침"</strong></li>
+        </ol>
+
+      </div>
+    </div>
+
+    <!-- 5단계: Git Bash 실행 (Win) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div>
+          <div class="section-title">Git Bash 실행</div>
+          <div class="section-subtitle">시작 메뉴에서 Git Bash를 찾아 실행</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>키보드 <strong>Windows 키</strong> 누르기 (화면 왼쪽 아래 윈도우 로고)</li>
+          <li>검색창에 <span class="code-inline">Git Bash</span> 입력</li>
+          <li><strong>Git Bash</strong> 앱 클릭하여 실행</li>
+          <li><strong>검은 화면의 터미널</strong>이 열리면 성공 ✅</li>
+        </ol>
+
+        <div class="placeholder">
+          <span class="ph-icon">🔍</span>
+          <div class="ph-title">시작 메뉴에서 "Git Bash" 검색</div>
+          <div class="ph-desc">Windows 키 → "Git Bash" 입력 → 앱 클릭</div>
+        </div>
+
+        <div class="img-wrap">
+          <img src="install_guide_images/05_gitbash.png" alt="Git Bash 터미널 실행 화면">
+          <div class="img-caption">▲ 이런 검은 창이 열리면 Git Bash 실행 완료!</div>
+        </div>
+
+
+        <div class="box box-gray">
+          <div class="box-title">💡 Git Bash에 붙여넣기 방법</div>
+          Git Bash에서는 <strong>Ctrl+V가 동작하지 않습니다.</strong> 터미널 안에서 <strong>마우스 오른쪽 클릭 → "Paste"</strong> 로 붙여넣기 하세요.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 6단계: Claude Code (Win) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">Claude Code 설치</div>
+          <div class="section-subtitle">Git Bash에서 명령어로 설치</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            5단계에서 열어둔 <strong>Git Bash</strong> 창에 아래 명령어를 <strong>복사 후 붙여넣기</strong>
+            <div class="code-block" style="margin-top:12px;">
+              <button class="copy-btn" onclick="copyCode(this)">복사</button>
+              <span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+            </div>
+            <div class="box box-gray" style="margin-top:0;">
+              <div class="box-title">💡 Git Bash 붙여넣기 방법</div>
+              터미널 창 안에서 <strong>마우스 오른쪽 클릭 → "Paste"</strong> (Ctrl+V 안 됨)
+            </div>
+          </li>
+          <li><strong>엔터 키</strong> 누르기</li>
+          <li>설치 완료까지 기다리기 — 보통 1~3분, 최대 20분 소요될 수 있음 (텍스트가 흘러가는 것이 정상)</li>
+          <li>다시 <span class="code-inline">$</span> 기호가 나타나면 설치 완료 ✅</li>
+        </ol>
+
+        <div class="placeholder">
+          <span class="ph-icon">⬛</span>
+          <div class="ph-title">Claude Code 설치 진행 화면</div>
+          <div class="ph-desc">명령어 실행 후 텍스트가 흘러가다가 $ 기호가 다시 나타나면 완료</div>
+        </div>
+
+        <div class="box-reboot">
+          <div style="font-size:28px; margin-bottom:8px;">🔄</div>
+          <div style="font-size:20px; font-weight:900; color:var(--orange); margin-bottom:8px;">Claude Code 설치 후에도 재부팅해 주세요!</div>
+          <div style="font-size:16px; color:#555;">재부팅해야 <span class="code-inline">claude</span> 명령어가 어느 터미널에서나 정상 인식됩니다.<br>재부팅 후 7단계(설치 확인)를 진행해 주세요.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 7단계: 설치 확인 (Win) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div>
+          <div class="section-title">설치 확인</div>
+          <div class="section-subtitle">재부팅 후 Git Bash를 열고 4가지 명령어로 확인</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <p style="font-size:17px; margin-bottom:16px;">아래 명령어를 <strong>하나씩</strong> 입력하고 엔터 → 버전 번호가 뜨면 성공입니다.</p>
+
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">복사</button>
+          <span class="comment"># 1. Python 확인</span><br>
+          <span class="cmd">python --version</span><br><br>
+          <span class="comment"># 2. Node.js 확인</span><br>
+          <span class="cmd">node -v</span><br><br>
+          <span class="comment"># 3. Git 확인</span><br>
+          <span class="cmd">git --version</span><br><br>
+          <span class="comment"># 4. Claude Code 확인</span><br>
+          <span class="cmd">claude --version</span>
+        </div>
+
+        <p style="font-size:17px; margin: 16px 0 8px;">정상 출력 예시:</p>
+        <div class="code-block">
+          Python 3.14.3<br>
+          v22.14.0<br>
+          git version 2.53.0<br>
+          1.x.x
+        </div>
+
+        <div class="box box-success">
+          <div class="box-title">✅ 4가지 모두 버전이 떴다면 설치 완료!</div>
+          강의 당일 <span class="code-inline">claude</span> 명령어를 입력하면 아래와 같은 화면이 나옵니다. Claude 계정으로 로그인하면 바로 사용 가능합니다.
+        </div>
+
+        <div class="box box-tip" style="margin-top:16px;">
+          <div class="box-title">🎉 이 화면이 나오면 완전히 설치 완료!</div>
+          Git Bash에서 <span class="code-inline">claude</span> 를 입력했을 때 아래처럼 돼지·블록 캐릭터와 함께 <strong>"Welcome to Claude Code"</strong>가 표시되면 성공입니다.
+        </div>
+        <div class="img-wrap">
+          <img src="install_guide_images/claude_welcome.png" alt="Claude Code 설치 완료 화면 — Welcome to Claude Code">
+          <div class="img-caption">▲ 이 화면이 나오면 Claude Code 설치 성공! (로그인 URL이 표시됩니다)</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FAQ (Win) -->
+    <div class="section" style="margin-top:40px;">
+      <div class="section-header">
+        <div class="section-num" style="background:#555;">?</div>
+        <div>
+          <div class="section-title">문제가 생겼을 때</div>
+          <div class="section-subtitle">자주 나오는 오류와 해결 방법</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="faq-item">
+          <div class="faq-q">❌ "command not found" 또는 "명령을 찾을 수 없습니다" 라고 나와요</div>
+          <div class="faq-a">재부팅을 했는지 확인해 주세요. 재부팅 후에도 안 된다면 설치 과정을 다시 확인해 보세요.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">❌ Python 명령이 안 됩니다 / python --version이 오류가 나요</div>
+          <div class="faq-a">
+            Git Bash 창을 완전히 닫고 새로 열어 주세요. 새 창에서도 안 된다면 컴퓨터를 <strong>재부팅</strong>한 후 다시 시도해 주세요.<br>
+            그래도 안 된다면 1단계로 돌아가 Python Install Manager가 정상 설치됐는지 확인해 주세요.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">❌ 회사 컴퓨터에서 npm install이 안 됩니다</div>
+          <div class="faq-a">회사 방화벽이나 보안 프로그램 때문일 수 있습니다. IT 담당자에게 <strong>"npm 사용 허용 요청"</strong>을 해주세요. 가능하다면 <strong>개인 노트북</strong>으로 준비하시는 것이 가장 편합니다.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">❌ 관리자 권한이 없어서 설치가 안 됩니다</div>
+          <div class="faq-a">관리자 권한이 있는 계정으로 로그인하거나, <strong>개인 노트북으로 준비</strong>해 주시기 바랍니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 체크리스트 (Win) -->
+    <div class="checklist">
+      <h2>✅ 최종 체크리스트</h2>
+      <div class="check-item"><div class="check-box"></div><span>Python 설치 완료 (Python Install Manager로 설치)</span></div>
+      <div class="check-item"><div class="check-box"></div><span>Node.js 설치 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span>Git 설치 완료 (Git Bash 포함)</span></div>
+      <div class="check-item"><div class="check-box"></div><span>🔄 Git 설치 후 재부팅 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span>VS Code 설치 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span>Claude Code 설치 완료 (<span class="code-inline">npm install -g @anthropic-ai/claude-code</span>)</span></div>
+      <div class="check-item"><div class="check-box"></div><span>🔄 Claude Code 설치 후 재부팅 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span><span class="code-inline">python --version</span> 버전 번호 확인 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span><span class="code-inline">node -v</span> 버전 번호 확인 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span><span class="code-inline">git --version</span> 버전 번호 확인 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span><span class="code-inline">claude --version</span> 버전 번호 확인 완료</span></div>
+    </div>
+
+    <div class="box box-warn" style="margin-top:28px; font-size:17px;">
+      <div class="box-title">⚠️ 가짜 사이트 주의</div>
+      검색으로 찾으면 광고·가짜 사이트가 먼저 뜰 수 있습니다. 반드시 아래 공식 주소를 직접 입력하세요:<br><br>
+      <strong>Python:</strong> python.org &nbsp;|&nbsp; <strong>Node.js:</strong> nodejs.org &nbsp;|&nbsp; <strong>Git:</strong> git-scm.com &nbsp;|&nbsp; <strong>VS Code:</strong> code.visualstudio.com
+    </div>
+
+  </div><!-- /container Win -->
+</div><!-- /tab-win -->
+
+
+<!-- ════════════════════════════════════════════
+     MAC 탭
+     ════════════════════════════════════════════ -->
+<div id="tab-mac" class="tab-content" style="display:none;">
+
+  <div class="progress-bar">
+    <div class="progress-step active"><span class="num">1</span> Python</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">2</span> Node.js</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">3</span> Git</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">4</span> VS Code</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">5</span> Claude Code</div>
+    <span class="progress-arrow">›</span>
+    <div class="progress-step active"><span class="num">6</span> 설치 확인</div>
+  </div>
+
+  <div class="container">
+
+    <div class="box box-blue" style="margin-top:28px; font-size:17px;">
+      <div class="box-title">💻 Mac 사용자 안내</div>
+      Mac은 기본 터미널이 내장되어 있어 Git Bash 없이 바로 사용할 수 있습니다. Windows보다 설치 단계가 적고 PATH 설정 걱정도 거의 없습니다.
+    </div>
+
+    <!-- 1단계: Python (Mac) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">Python 설치</div>
+          <div class="section-subtitle">python.org에서 macOS 버전 다운로드</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            브라우저에서 <a class="url-link" href="https://www.python.org/downloads/" target="_blank">python.org/downloads</a> 접속
+            <div class="img-wrap" style="margin-top:12px;">
+              <img src="install_guide_images/01_python_download.png" alt="Python 다운로드 페이지">
+              <div class="img-caption">▲ python.org/downloads — 노란색 "Download Python 3.x.x" 버튼 클릭</div>
+            </div>
+          </li>
+          <li>노란색 <strong>"Download Python 3.x.x"</strong> 버튼 클릭하여 다운로드</li>
+          <li>다운로드된 <span class="code-inline">.pkg</span> 파일 더블클릭</li>
+          <li>설치 화면에서 <strong>"계속"</strong> 클릭 → 사용권 계약 <strong>"동의"</strong> → <strong>"설치"</strong></li>
+          <li>비밀번호 입력 (Mac 로그인 비밀번호) → <strong>"소프트웨어 설치"</strong> 클릭</li>
+          <li>설치 완료 후 <strong>"닫기"</strong> 클릭</li>
+        </ol>
+
+        <div class="box box-tip">
+          <div class="box-title">📌 Mac은 PATH 체크박스 없어요 — 자동으로 처리됩니다</div>
+          Windows와 달리 Mac에서는 별도로 PATH를 체크할 필요가 없습니다. 설치 후 자동으로 설정됩니다.
+        </div>
+
+        <div class="box box-gray">
+          <div class="box-title">💡 설치 후 독(Dock)에 아이콘이 생기지 않아요 — 정상입니다</div>
+          Python은 카카오톡처럼 실행하는 앱이 아니라, <strong>컴퓨터 안에 깔리는 언어 엔진</strong>입니다. 독 아이콘이 생기지 않는 게 맞습니다.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2단계: Node.js (Mac) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">Node.js 설치</div>
+          <div class="section-subtitle">nodejs.org에서 macOS 버전 다운로드</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            브라우저에서 <a class="url-link" href="https://nodejs.org" target="_blank">nodejs.org</a> 접속
+            <div class="img-wrap" style="margin-top:12px;">
+              <img src="install_guide_images/02_nodejs_download.png" alt="Node.js 다운로드 페이지">
+              <div class="img-caption">▲ nodejs.org — 초록색 "Get Node.js®" 버튼 클릭</div>
+            </div>
+          </li>
+          <li><strong>"Get Node.js®"</strong> 초록색 버튼 클릭 (LTS 버전이 자동 선택됨)</li>
+          <li>
+            다운로드 페이지로 이동되면, 페이지 중간의 코드(명령어)는 무시하고 아래로 스크롤해서 <span class="highlight-green">"macOS 설치 프로그램 (.pkg)"</span> 버튼 클릭
+            <div class="box box-warn" style="margin-top:12px;">
+              <div class="box-title">⚠️ 주의 — 코드 블록은 건드리지 마세요</div>
+              페이지 가운데에 코드가 보이는데, 이건 개발자용 방식입니다. 무시하고 페이지 아래 <span class="highlight-green">"macOS 설치 프로그램 (.pkg)"</span> 버튼을 클릭하세요.
+            </div>
+          </li>
+          <li>다운로드된 <span class="code-inline">.pkg</span> 파일 더블클릭</li>
+          <li>설치 화면에서 <strong>"계속"</strong> 클릭 → <strong>"설치"</strong> → 비밀번호 입력</li>
+          <li>설치 완료 후 <strong>"닫기"</strong> 클릭</li>
+        </ol>
+
+        <div class="box box-tip">
+          <div class="box-title">📌 Node.js를 설치하면 npm도 자동으로 설치됩니다</div>
+          npm은 앱스토어처럼 프로그램을 설치하는 도구로, Claude Code 설치에 사용됩니다. 따로 설치할 필요 없습니다.
+        </div>
+
+        <div class="box box-gray">
+          <div class="box-title">💡 설치 후 독(Dock)에 아이콘이 생기지 않아요 — 정상입니다</div>
+          Node.js도 Python처럼 <strong>눈에 보이지 않는 언어 엔진</strong>입니다. 독 아이콘이 생기지 않는 게 맞습니다.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3단계: Git (Mac) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Git 설치</div>
+          <div class="section-subtitle">터미널에서 명령어 한 줄로 설치</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <div class="box box-blue">
+          <div class="box-title">💻 Mac에서 Git은 터미널 명령어 한 줄로 설치됩니다</div>
+          Mac에는 <strong>Xcode 커맨드라인 도구</strong>라는 Apple 공식 패키지가 있는데, 이 안에 Git이 포함되어 있습니다.<br>
+          아래 명령어 한 줄로 이 패키지를 설치하면 Git이 자동으로 함께 설치됩니다.
+        </div>
+
+        <ol class="steps">
+          <li>
+            터미널 앱 열기
+            <div class="box box-gray" style="margin-top:10px;">
+              <strong>방법 1:</strong> 키보드 <strong>Cmd(⌘) + 스페이스</strong> → "terminal" 입력 → 엔터<br>
+              <strong>방법 2:</strong> 응용 프로그램 → 유틸리티 → 터미널
+            </div>
+          </li>
+          <li>
+            아래 명령어를 터미널에 복사 후 붙여넣기 (Cmd+V) → 엔터
+            <div class="code-block" style="margin-top:12px;">
+              <button class="copy-btn" onclick="copyCode(this)">복사</button>
+              <span class="cmd">xcode-select --install</span>
+            </div>
+            <div class="box box-gray" style="margin-top:10px;">
+              이 명령어는 Apple의 Xcode 커맨드라인 도구를 설치합니다. Git이 이 안에 포함되어 있습니다.
+            </div>
+          </li>
+          <li>
+            <strong>"명령줄 개발자 도구를 설치하시겠습니까?"</strong> 팝업이 뜨면 <strong>"설치"</strong> 클릭
+            <div class="box box-tip" style="margin-top:10px;">
+              <div class="box-title">📌 팝업이 뜨지 않는다면?</div>
+              이미 Git이 설치된 것입니다. 다음 단계로 넘어가세요.
+            </div>
+          </li>
+          <li>설치 완료(수 분 소요) → <strong>"완료"</strong> 클릭</li>
+        </ol>
+
+      </div>
+    </div>
+
+    <!-- 4단계: VS Code (Mac) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div>
+          <div class="section-title">VS Code 설치</div>
+          <div class="section-subtitle">code.visualstudio.com에서 macOS 버전 다운로드</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            브라우저에서 <a class="url-link" href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a> 접속
+            <div class="img-wrap" style="margin-top:12px;">
+              <img src="install_guide_images/04_vscode_download.png" alt="VS Code 다운로드 페이지">
+              <div class="img-caption">▲ code.visualstudio.com — "Download for macOS" 버튼 클릭</div>
+            </div>
+          </li>
+          <li>회색 <strong>"Download for macOS"</strong> 버튼 클릭 → 자동 다운로드</li>
+          <li>다운로드된 <span class="code-inline">.zip</span> 파일 더블클릭 → Visual Studio Code 앱 생성</li>
+          <li>생성된 <strong>Visual Studio Code 앱</strong>을 <strong>응용 프로그램(Applications) 폴더</strong>로 드래그</li>
+          <li>응용 프로그램 폴더에서 VS Code 실행</li>
+        </ol>
+
+        <div class="box box-tip">
+          <div class="box-title">📌 "개발자가 확인되지 않은 앱" 경고가 뜨면?</div>
+          시스템 설정 → 개인 정보 보호 및 보안 → 아래쪽에 <strong>"확인 없이 열기"</strong> 또는 <strong>"허용"</strong> 버튼 클릭
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5단계: Claude Code (Mac) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div>
+          <div class="section-title">Claude Code 설치</div>
+          <div class="section-subtitle">터미널에서 명령어로 설치</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <ol class="steps">
+          <li>
+            터미널 앱 열기 (Cmd+스페이스 → "terminal" → 엔터)
+          </li>
+          <li>
+            아래 명령어를 터미널에 <strong>복사 후 붙여넣기</strong>
+            <div class="code-block" style="margin-top:12px;">
+              <button class="copy-btn" onclick="copyCode(this)">복사</button>
+              <span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+            </div>
+            <div class="box box-gray" style="margin-top:0;">
+              <div class="box-title">💡 Mac 터미널 붙여넣기</div>
+              복사 후 터미널에서 <strong>Cmd(⌘) + V</strong>
+            </div>
+          </li>
+          <li><strong>엔터 키</strong> 누르기</li>
+          <li>설치 완료까지 기다리기 — 보통 1~3분, 최대 20분 소요될 수 있음 (텍스트가 흘러가는 것이 정상)</li>
+          <li>다시 <span class="code-inline">$</span> 기호가 나타나면 설치 완료 ✅</li>
+        </ol>
+
+        <div class="placeholder">
+          <span class="ph-icon">⬛</span>
+          <div class="ph-title">Claude Code 설치 진행 화면</div>
+          <div class="ph-desc">명령어 실행 후 텍스트가 흘러가다가 $ 기호가 다시 나타나면 완료</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 6단계: 설치 확인 (Mac) -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">설치 확인</div>
+          <div class="section-subtitle">터미널을 새로 열고 4가지 명령어로 확인</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <div class="box box-warn">
+          <div class="box-title">⚠️ 반드시 터미널을 새로 열고 확인하세요</div>
+          기존에 열려있던 터미널 창에서는 방금 설치한 프로그램이 인식되지 않을 수 있습니다. 터미널을 <strong>완전히 닫은 후 다시 열어</strong> 아래 명령어를 실행해 주세요.
+        </div>
+
+        <p style="font-size:17px; margin-bottom:16px;">아래 명령어를 <strong>하나씩</strong> 입력하고 엔터 → 버전 번호가 뜨면 성공입니다.</p>
+
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">복사</button>
+          <span class="comment"># 1. Python 확인</span><br>
+          <span class="cmd">python3 --version</span><br><br>
+          <span class="comment"># 2. Node.js 확인</span><br>
+          <span class="cmd">node -v</span><br><br>
+          <span class="comment"># 3. Git 확인</span><br>
+          <span class="cmd">git --version</span><br><br>
+          <span class="comment"># 4. Claude Code 확인</span><br>
+          <span class="cmd">claude --version</span>
+        </div>
+
+        <p style="font-size:17px; margin: 16px 0 8px;">정상 출력 예시:</p>
+        <div class="code-block">
+          Python 3.14.3<br>
+          v22.14.0<br>
+          git version 2.53.0 (Apple Git-137)<br>
+          1.x.x
+        </div>
+
+        <div class="box box-success">
+          <div class="box-title">✅ 4가지 모두 버전이 떴다면 설치 완료!</div>
+          강의 당일 <span class="code-inline">claude</span> 명령어를 입력하면 아래와 같은 화면이 나옵니다. Claude 계정으로 로그인하면 바로 사용 가능합니다.
+        </div>
+
+        <div class="box box-tip" style="margin-top:16px;">
+          <div class="box-title">🎉 이 화면이 나오면 완전히 설치 완료!</div>
+          터미널에서 <span class="code-inline">claude</span> 를 입력했을 때 아래처럼 돼지·블록 캐릭터와 함께 <strong>"Welcome to Claude Code"</strong>가 표시되면 성공입니다.
+        </div>
+        <div class="img-wrap">
+          <img src="install_guide_images/claude_welcome.png" alt="Claude Code 설치 완료 화면 — Welcome to Claude Code">
+          <div class="img-caption">▲ 이 화면이 나오면 Claude Code 설치 성공! (로그인 URL이 표시됩니다)</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FAQ (Mac) -->
+    <div class="section" style="margin-top:40px;">
+      <div class="section-header">
+        <div class="section-num" style="background:#555;">?</div>
+        <div>
+          <div class="section-title">문제가 생겼을 때</div>
+          <div class="section-subtitle">자주 나오는 오류와 해결 방법</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="faq-item">
+          <div class="faq-q">❌ "command not found" 라고 나와요</div>
+          <div class="faq-a">터미널 창을 닫고 새로 열어 주세요. 새 터미널에서 다시 시도해도 안 된다면 Mac을 재부팅해 보세요.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">❌ python3 --version이 오류가 나요</div>
+          <div class="faq-a">python3 명령을 확인해 주세요 (Mac은 python이 아니라 <strong>python3</strong>입니다). 설치가 안 됐다면 1단계로 돌아가서 다시 설치해 주세요.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">❌ xcode-select --install을 했는데 팝업이 안 뜨고 오류가 나요</div>
+          <div class="faq-a">이미 설치가 되어 있는 것입니다. <span class="code-inline">git --version</span>을 입력해서 버전이 나오면 정상입니다.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">❌ VS Code 실행 시 "개발자 확인 불가" 경고가 뜹니다</div>
+          <div class="faq-a">시스템 설정 → 개인 정보 보호 및 보안 → 아래쪽 <strong>"허용"</strong> 버튼을 클릭해 주세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 체크리스트 (Mac) -->
+    <div class="checklist">
+      <h2>✅ 최종 체크리스트</h2>
+      <div class="check-item"><div class="check-box"></div><span>Python 설치 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span>Node.js 설치 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span>Git 설치 완료 (<span class="code-inline">xcode-select --install</span>)</span></div>
+      <div class="check-item"><div class="check-box"></div><span>VS Code 설치 완료 (Applications 폴더에 이동)</span></div>
+      <div class="check-item"><div class="check-box"></div><span>Claude Code 설치 완료 (<span class="code-inline">npm install -g @anthropic-ai/claude-code</span>)</span></div>
+      <div class="check-item"><div class="check-box"></div><span><span class="code-inline">python3 --version</span> 버전 번호 확인 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span><span class="code-inline">node -v</span> 버전 번호 확인 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span><span class="code-inline">git --version</span> 버전 번호 확인 완료</span></div>
+      <div class="check-item"><div class="check-box"></div><span><span class="code-inline">claude --version</span> 버전 번호 확인 완료</span></div>
+    </div>
+
+    <div class="box box-warn" style="margin-top:28px; font-size:17px;">
+      <div class="box-title">⚠️ 가짜 사이트 주의</div>
+      검색으로 찾으면 광고·가짜 사이트가 먼저 뜰 수 있습니다. 반드시 아래 공식 주소를 직접 입력하세요:<br><br>
+      <strong>Python:</strong> python.org &nbsp;|&nbsp; <strong>Node.js:</strong> nodejs.org &nbsp;|&nbsp; <strong>VS Code:</strong> code.visualstudio.com
+    </div>
+
+  </div><!-- /container Mac -->
+</div><!-- /tab-mac -->
+
+<footer style="text-align:center; padding: 32px 0 28px; color: var(--orange); font-size: 15px; font-weight: 700; letter-spacing: 0.3px;">
+  © Woka. All Rights Reserved
+</footer>
+
+<script>
+function switchTab(os, btn) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.style.display = 'none'; });
+  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + os).style.display = 'block';
+  btn.classList.add('active');
+}
+
+function copyCode(btn) {
+  var block = btn.parentElement;
+  var cmds = block.querySelectorAll('.cmd');
+  var text = Array.from(cmds).map(function(c) { return c.textContent.trim(); }).join('\n');
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '✓ 복사됨';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = '복사';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
