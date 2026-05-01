@@ -10,6 +10,7 @@
 !drive-settle-expense-app/**
 !claude-guide-deploy/
 !claude-guide-deploy/**
+!claude-guide-deploy/install_guide_images/*.png
 
 # 3단계: 루트의 설정 파일만 허용
 !.gitignore

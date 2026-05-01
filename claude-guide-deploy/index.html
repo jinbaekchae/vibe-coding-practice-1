@@ -394,6 +394,57 @@
         </ol>
 
 
+        <div class="box box-blue" style="margin-top:12px;">
+          <div class="box-title">🖥️ 설치 후 검은 창이 뜨면서 영어로 y/N 을 묻는다면? — 정상입니다</div>
+          Python Install Manager가 처음 실행되면서 자동으로 "환경 점검"을 합니다. 환경에 따라 영어 질문이 <strong>최대 5번까지</strong> 뜰 수 있어요. 길어 보이지만 당황하지 마세요.
+          <div style="margin-top:10px; padding:10px 14px; background:#fff; border-radius:6px;">
+            <strong>👉 간단 규칙: 키보드 <span class="code-inline">Y</span> 입력 후 Enter를 그때마다 누르면 됩니다.</strong><br>
+            <span style="color:#666; font-size:14px;">(질문이 안 떠도 정상, 5번 다 떠도 정상. 모두 Y로 답해도 안전합니다.)</span>
+          </div>
+          <div style="margin-top:12px;">
+            <strong>각 질문이 무엇을 묻는지 (참고용):</strong>
+            <table style="width:100%; margin-top:8px; border-collapse:collapse; background:#fff; border-radius:6px; overflow:hidden; font-size:14px;">
+              <thead>
+                <tr style="background:#f3f4f6; text-align:left;">
+                  <th style="padding:8px 10px; border-bottom:1px solid #e5e7eb;">영어 질문</th>
+                  <th style="padding:8px 10px; border-bottom:1px solid #e5e7eb;">무엇을 묻는지</th>
+                  <th style="padding:8px 10px; border-bottom:1px solid #e5e7eb; white-space:nowrap;">어떻게 답할지</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5;"><span class="code-inline">Open Settings now ... ? [y/N]</span></td>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5;">윈도우 설정 창 열까요?</td>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5; white-space:nowrap;">그냥 Enter</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5;"><span class="code-inline">Update setting now? [y/N]</span></td>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5;">긴 파일 경로 허용할까요?</td>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5; white-space:nowrap;"><strong>Y</strong> + Enter</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5;"><span class="code-inline">Open Installed apps now? [y/N]</span></td>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5;">옛 파이썬 런처 점검 창 열까요?</td>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5; white-space:nowrap;">그냥 Enter</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5;"><span class="code-inline">Add commands directory to your PATH now? [y/N]</span></td>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5;">터미널에서 명령어 인식되게 PATH에 등록할까요?</td>
+                  <td style="padding:8px 10px; border-bottom:1px solid #f1f3f5; white-space:nowrap;"><strong>Y</strong> + Enter</td>
+                </tr>
+                <tr style="background:#fff7ed;">
+                  <td style="padding:8px 10px;"><span class="code-inline">Install CPython now? [Y/n]</span> <strong style="color:#ea580c;">← 핵심!</strong></td>
+                  <td style="padding:8px 10px;">파이썬 본체(3.xx)를 지금 설치할까요?<br><span style="color:#666;">이걸 Y해야 실제 파이썬이 깔립니다.</span></td>
+                  <td style="padding:8px 10px; white-space:nowrap;"><strong>Y</strong> + Enter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:10px; color:#444;">
+            마지막에 <span class="code-inline">Configuration checks completed.</span> 메시지가 뜨면 끝. 창은 자동으로 닫힙니다.
+          </div>
+        </div>
+
         <div class="box box-gray">
           <div class="box-title">💡 설치 후 바탕화면에 아무것도 생기지 않아요 — 정상입니다</div>
           Python은 카카오톡이나 크롬처럼 실행하는 앱이 아니라, <strong>컴퓨터 안에 깔리는 언어 엔진</strong>입니다. 바탕화면 아이콘이 생기지 않는 게 맞습니다.
@@ -647,6 +698,11 @@
           v22.14.0<br>
           git version 2.53.0<br>
           1.x.x
+        </div>
+
+        <div class="box box-gray" style="margin-top:12px;">
+          <div class="box-title">💡 버전 숫자가 위 예시와 달라도 정상입니다</div>
+          예시는 작성 시점 버전이라 시간이 지나면 더 높은 숫자가 표시됩니다. (예: <span class="code-inline">Python 3.15.x</span>, <span class="code-inline">v24.x.x</span> 등) <strong>"command not found" 같은 오류 없이 어떤 버전 숫자라도 떴다면 설치 성공</strong>입니다.
         </div>
 
         <div class="box box-success">
@@ -991,6 +1047,11 @@
           v22.14.0<br>
           git version 2.53.0 (Apple Git-137)<br>
           1.x.x
+        </div>
+
+        <div class="box box-gray" style="margin-top:12px;">
+          <div class="box-title">💡 버전 숫자가 위 예시와 달라도 정상입니다</div>
+          예시는 작성 시점 버전이라 시간이 지나면 더 높은 숫자가 표시됩니다. (예: <span class="code-inline">Python 3.15.x</span>, <span class="code-inline">v24.x.x</span> 등) <strong>"command not found" 같은 오류 없이 어떤 버전 숫자라도 떴다면 설치 성공</strong>입니다.
         </div>
 
         <div class="box box-success">
