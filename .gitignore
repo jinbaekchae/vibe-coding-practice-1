@@ -11,6 +11,9 @@
 !claude-guide-deploy/
 !claude-guide-deploy/**
 !claude-guide-deploy/install_guide_images/*.png
+!claude-guide-antigravity-deploy/
+!claude-guide-antigravity-deploy/**
+!claude-guide-antigravity-deploy/install_guide_images/*.png
 
 # 3단계: 루트의 설정 파일만 허용
 !.gitignore
@@ -38,3 +41,4 @@ package-lock.json
 !install_guide_images/
 !install_guide_images/**
 !install_guide_images/*.png
+!claude-guide-antigravity-deploy/install_guide_images/*.png
